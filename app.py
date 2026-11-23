@@ -53,15 +53,23 @@ with app.app_context():
 # Function to save user activity history
 def save_history(feature_name, input_text, output_text):
 
-    history = ActivityHistory(
-        user_id=session["user_id"],
-        feature_name=feature_name,
-        input_text=str(input_text),
-        output_text=str(output_text)
-    )
+    try:
+        history = ActivityHistory(
+            user_id=session["user_id"],
+            feature_name=feature_name,
+            input_text=str(input_text),
+            output_text=str(output_text)
+        )
 
-    db.session.add(history)
-    db.session.commit()
+        db.session.add(history)
+        db.session.commit()
+
+        return True
+
+    except Exception as e:
+        db.session.rollback()
+        print("History Database Error:", e)
+        return False
 
 def login_required(route_function):
 
@@ -206,17 +214,15 @@ def generator():
                     length
                 )
 
+            except Exception as e:
+                print("Gemini API Error:", e)
+                error = "Content generation failed. Please try again."
+
+            else:
                 save_history(
                     feature_name="Content Generator",
                     input_text=f"Topic: {topic}, Type: {content_type}, Tone: {tone}, Length: {length}",
                     output_text=generated_content
-                )
-
-            except Exception as e:
-                print("Gemini API Error:", e)
-                error = (
-                    "Content generation failed. "
-                    "Please check your API key or internet connection."
                 )
 
     return render_template(
@@ -259,22 +265,20 @@ def prompt_lab():
 
         else:
             try:
-                generated_prompt, generated_response = (
-                    generate_prompt_response(
-                        technique, task, example
-                    )
-                )
-
-                save_history(
-                    feature_name="Prompt Engineering Lab",
-                    input_text=f"Technique: {technique}, Task: {task}, Example: {example}",
-                    output_text=f"Generated Prompt:\n{generated_prompt}\n\nAI Response:\n{generated_response}"
+                generated_prompt, generated_response = generate_prompt_response(
+                technique, task, example
                 )
 
             except Exception as e:
                 print("Prompt Lab Gemini Error:", e)
                 error = "Unable to generate a response. Please try again."
 
+            else:
+                save_history(
+                    feature_name="Prompt Engineering Lab",
+                    input_text=f"Technique: {technique}, Task: {task}, Example: {example}",
+                    output_text=f"Generated Prompt:\n{generated_prompt}\n\nAI Response:\n{generated_response}"
+                )
     return render_template(
         "prompt_lab.html",
         generated_prompt=generated_prompt,
@@ -301,15 +305,16 @@ def sentiment():
             try:
                 result = analyze_sentiment(input_text)
 
+            except Exception as e:
+                print("Sentiment Analysis Error:", e)
+                error = "Unable to analyze sentiment. Please try again."
+
+            else:
                 save_history(
                     feature_name="Sentiment Analysis",
                     input_text=input_text,
                     output_text=str(result)
                 )
-
-            except Exception as e:
-                print("Sentiment Analysis Error:", e)
-                error = "Unable to analyze sentiment. Please try again."
 
     return render_template(
         "sentiment.html",
@@ -334,16 +339,16 @@ def information_extraction():
             try:
                 extracted_information = extract_information(input_text)
 
+            except Exception as e:
+                print("Information Extraction Error:", e)
+                error = "Unable to extract information. Please try again."
+
+            else:
                 save_history(
                     feature_name="Information Extraction",
                     input_text=input_text,
                     output_text=str(extracted_information)
                 )
-
-            except Exception as e:
-                print("Information Extraction Error:", e)
-                error = "Unable to extract information. Please try again."
-
     return render_template(
         "information_extraction.html",
         extracted_information=extracted_information,
@@ -370,18 +375,19 @@ def code_generator():
         else:
             try:
                 generated_code = generate_code(
-                    task, language, difficulty
-                )
+                task, language, difficulty
+            )
 
+            except Exception as e:
+                print("Code Generator Error:", e)
+                error = "Unable to generate code. Please try again."
+
+            else:
                 save_history(
                     feature_name="AI Code Generator",
                     input_text=f"Task: {task}, Language: {language}, Difficulty: {difficulty}",
                     output_text=str(generated_code)
                 )
-
-            except Exception as e:
-                print("Code Generator Error:", e)
-                error = "Unable to generate code. Please try again."
 
     return render_template(
         "code_generator.html",
@@ -408,22 +414,23 @@ def chatbot():
         else:
             try:
                 reply, history = get_chatbot_response(
-                    message,
-                    session["conversation_history"]
-                )
-
-                session["conversation_history"] = history
-                session.modified = True
-
-                save_history(
-                    feature_name="AI Chatbot",
-                    input_text=message,
-                    output_text=reply
-                )
+                message,
+                session["conversation_history"]
+            )
 
             except Exception as e:
                 print("Chatbot Error:", e)
                 error = "Unable to generate a response. Please try again."
+
+            else:
+                session["conversation_history"] = history
+                session.modified = True
+
+            save_history(
+                feature_name="AI Chatbot",
+                input_text=message,
+                output_text=reply
+            )
 
     return render_template(
         "chatbot.html",
