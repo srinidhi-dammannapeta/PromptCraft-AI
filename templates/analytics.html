@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - PromptCraft AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <h2>PromptCraft AI</h2>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/generator">Content Generator</a>
+        <a href="/prompt-lab">Prompt Lab</a>
+        <a href="/sentiment">Sentiment Analysis</a>
+        <a href="/information-extraction">Information Extraction</a>
+        <a href="/code-generator">AI Code Generator</a>
+        <a href="/chatbot">AI Chatbot</a>
+        <a href="/image-to-text">Image-to-Text Analysis</a>
+        <a href="/analytics" class="active">Analytics Dashboard</a>
+        <a href="/history">History</a>
+    </div>
+
+    <div class="sidebar-bottom">
+        <a href="/logout">Logout</a>
+    </div>
+</nav>
+
+<main class="analytics-page">
+
+    <h1>Analytics Dashboard</h1>
+    <p class="analytics-subtitle">
+        Track your AI feature usage and activity statistics.
+    </p>
+
+    <section class="analytics-summary">
+        <div class="analytics-card total-card">
+            <h3>Total AI Activities</h3>
+            <h2>{{ total_activities }}</h2>
+            <p>Activities performed</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>Available AI Features</h3>
+            <h2>7</h2>
+            <p>Features being tracked</p>
+        </div>
+    </section>
+
+    <section class="analytics-section">
+        <h2>Feature Usage Statistics</h2>
+
+        <div class="feature-stats">
+            {% for feature, count in feature_counts.items() %}
+            <div class="feature-stat-card">
+                <div class="feature-stat-header">
+                    <h3>{{ feature }}</h3>
+                    <span>{{ count }} uses</span>
+                </div>
+
+                
+            <div class="progress-bar">
+                {% set percentage = (count / total_activities * 100) if total_activities else 0 %}
+                <div class="progress-fill"
+                    style="width: {{ percentage }}%;">
+                </div>
+            </div>
+
+                
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="analytics-section">
+        <h2>Recent Activities</h2>
+
+        {% if recent_activities %}
+            {% for item in recent_activities %}
+            <div class="recent-activity-card">
+                <div>
+                    <h3>{{ item.feature_name }}</h3>
+                    <p>{{ item.input_text[:100] }}</p>
+                </div>
+
+                <span class="activity-date">
+                    {{ item.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                </span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="analytics-empty">
+                No activities available yet. Start using AI features!
+            </p>
+        {% endif %}
+    </section>
+
+</main>
+
+</body>
+</html>

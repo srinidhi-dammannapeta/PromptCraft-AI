@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Content Generator | PromptCraft AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="navbar">
+
+        <h2>PromptCraft AI</h2>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="/generator">Content Generator</a>
+            <a href="/prompt-lab">Prompt Lab</a>
+            <a href="/sentiment">Sentiment Analysis</a>
+            <a href="/information-extraction">Information Extraction</a>
+            <a href="/code-generator">AI Code Generator</a>
+            <a href="/chatbot">AI Chatbot</a>
+            <a href="/image-to-text">Image-to-Text Analysis</a>
+            <a href="/history">History</a>
+            <a href="/analytics">Analytics Dashboard</a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="/logout">Logout</a>
+        </div>
+
+    </nav>
+
+    <!-- Main Content -->
+    <main class="page-content">
+
+        <section class="generator-section">
+
+            <h1>AI Content Generator</h1>
+
+            <p>Create content using intelligent prompt engineering.</p>
+
+            <form method="POST">
+
+                <label>Enter Your Topic</label>
+
+                <textarea name="topic"
+                          placeholder="Example: Artificial Intelligence"
+                          required></textarea>
+
+                <label>Select Content Type</label>
+
+                <select name="content_type">
+                    <option value="Blog">Blog</option>
+                    <option value="Article">Article</option>
+                    <option value="Email">Email</option>
+                    <option value="Social Media Post">Social Media Post</option>
+                    <option value="Summary">Summary</option>
+                </select>
+
+                <label>Select Tone</label>
+
+                <select name="tone">
+                    <option value="Professional">Professional</option>
+                    <option value="Friendly">Friendly</option>
+                    <option value="Formal">Formal</option>
+                    <option value="Creative">Creative</option>
+                </select>
+
+                <label>Select Content Length</label>
+
+                <select name="length">
+                    <option value="Short">Short</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Long">Long</option>
+                </select>
+
+                <button type="submit">Generate Content</button>
+
+            </form>
+
+            {% if generated_prompt %}
+            <div class="result-box">
+                <h2>Generated Prompt</h2>
+                <pre>{{ generated_prompt }}</pre>
+            </div>
+            {% endif %}
+
+            {% if generated_content %}
+            <div class="result-box">
+                <h2>AI Generated Content</h2>
+
+                <div class="generated-content">
+                    {{ generated_content }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result-box">
+                <h3>Error</h3>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Image-to-Text Analysis | PromptCraft AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav class="navbar">
+
+        <h2>PromptCraft AI</h2>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="/generator">Content Generator</a>
+            <a href="/prompt-lab">Prompt Lab</a>
+            <a href="/sentiment">Sentiment Analysis</a>
+            <a href="/information-extraction">Information Extraction</a>
+            <a href="/code-generator">AI Code Generator</a>
+            <a href="/chatbot">AI Chatbot</a>
+            <a href="/image-to-text">Image-to-Text Analysis</a>
+            <a href="/history">History</a>
+            <a href="/analytics">Analytics Dashboard</a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="/logout">Logout</a>
+        </div>
+
+    </nav>
+
+    <!-- Main Content -->
+    <main class="page-content">
+
+        <section class="generator-section">
+
+            <h1>Image-to-Text Analysis</h1>
+
+            <p>Upload an image and let AI understand and describe its contents.</p>
+
+            <form method="POST"
+                  action="/image-to-text"
+                  enctype="multipart/form-data">
+
+                <label>Upload Your Image</label>
+
+                <input type="file"
+                       name="image"
+                       accept=".jpg,.jpeg,.png,.webp"
+                       required>
+
+                <label>Ask a Question (Optional)</label>
+
+                <textarea name="question"
+                          placeholder="Example: Describe this image in detail.">{{ question }}</textarea>
+
+                <button type="submit">Analyze Image</button>
+
+            </form>
+
+            {% if result %}
+            <div class="result-box">
+                <h2>AI Image Analysis Result</h2>
+
+                <div class="generated-content">
+                    {{ result }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result-box">
+                <h3>Error</h3>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+</html>

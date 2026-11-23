@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Extraction | PromptCraft AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h2>PromptCraft AI</h2>
+        <div>
+            <a href="/">Home</a>
+            <a href="/generator">Content Generator</a>
+            <a href="/prompt-lab">Prompt Lab</a>
+            <a href="/sentiment">Sentiment Analysis</a>
+            <a href="/information-extraction">Information Extraction</a>
+            <a href="/code-generator">AI Code Generator</a>
+            <a href="/chatbot">AI Chatbot</a>
+            <a href="/image-to-text">Image-to-Text Analysis</a>
+            <a href="/history">History</a>
+            <a href="/analytics">Analytics Dashboard</a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="/logout">Logout</a>
+        </div>
+        
+    </nav>
+
+    <main class="page-content">
+        <section class="container">
+
+            <h1>Information Extraction</h1>
+            <p>Extract important information, keywords, entities and summaries from your text using Gemini AI.</p>
+
+            <div class="result-box">
+                <h2>Analyze Your Text</h2>
+
+                <form method="POST">
+                    <label for="text">Enter Your Text</label>
+
+                    <textarea
+                        id="text"
+                        name="text"
+                        rows="9"
+                        placeholder="Paste your paragraph or document text here..."
+                        required>{{ input_text or '' }}</textarea>
+
+                    <button type="submit">Extract Information</button>
+                </form>
+            </div>
+
+            {% if extracted_information %}
+            <div class="result-box">
+                <h2>Extracted Information</h2>
+                <div class="generated-content">
+                    {{ extracted_information }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result-box">
+                <h3>Error</h3>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+</body>
+</html>

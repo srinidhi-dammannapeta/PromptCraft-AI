@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot | PromptCraft AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h2>PromptCraft AI</h2>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="/generator">Content Generator</a>
+            <a href="/prompt-lab">Prompt Lab</a>
+            <a href="/sentiment">Sentiment Analysis</a>
+            <a href="/information-extraction">Information Extraction</a>
+            <a href="/code-generator">AI Code Generator</a>
+            <a href="/chatbot">AI Chatbot</a>
+            <a href="/image-to-text">Image-to-Text Analysis</a>
+            <a href="/history">History</a>
+            <a href="/analytics">Analytics Dashboard</a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="/logout">Logout</a>
+        </div>
+        
+    </nav>
+
+    <main class="page-content">
+        <section class="container">
+
+            <h1>AI Chatbot</h1>
+            <p>Interact with your intelligent AI assistant and get answers to your questions.</p>
+
+            <div class="result-box">
+                <h2>Chat with PromptCraft AI</h2>
+
+                <div class="chat-history">
+                    {% for item in conversation_history %}
+                        {% if item.role == 'user' %}
+                            <div class="result-box">
+                                <strong>You:</strong>
+                                <p>{{ item.parts[0].text }}</p>
+                            </div>
+                        {% else %}
+                            <div class="result-box">
+                                <strong>PromptCraft AI:</strong>
+                                <p>{{ item.parts[0].text }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <form method="POST">
+                    <label for="message">Enter Your Message</label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="3"
+                        placeholder="Ask me anything..."
+                        required></textarea>
+
+                    <button type="submit">Send Message</button>
+                </form>
+
+                <form action="/clear-chat" method="POST">
+                    <button type="submit">Clear Chat</button>
+                </form>
+            </div>
+
+            {% if error %}
+                <div class="result-box">
+                    <h3>Error</h3>
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+</body>
+</html>

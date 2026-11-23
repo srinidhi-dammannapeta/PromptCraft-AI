@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Generator | PromptCraft AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h2>PromptCraft AI</h2>
+
+        <div>
+            <a href="/">Home</a>
+            <a href="/generator">Content Generator</a>
+            <a href="/prompt-lab">Prompt Lab</a>
+            <a href="/sentiment">Sentiment Analysis</a>
+            <a href="/information-extraction">Information Extraction</a>
+            <a href="/code-generator">AI Code Generator</a>
+            <a href="/chatbot">AI Chatbot</a>
+            <a href="/image-to-text">Image-to-Text Analysis</a>
+            <a href="/history">History</a>
+            <a href="/analytics">Analytics Dashboard</a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="/logout">Logout</a>
+        </div>
+        
+    </nav>
+
+    <main class="page-content">
+        <section class="container">
+
+            <h1>AI Code Generator</h1>
+            <p>Generate programming solutions and understand code using Gemini AI.</p>
+
+            <div class="result-box">
+                <h2>Generate Your Code</h2>
+
+                <form method="POST">
+
+                    <label for="task">Programming Task</label>
+                    <textarea
+                        id="task"
+                        name="task"
+                        rows="6"
+                        placeholder="Example: Write a Python program to check whether a number is prime..."
+                        required>{{ task or '' }}</textarea>
+
+                    <label for="language">Programming Language</label>
+                    <select id="language" name="language" required>
+                        <option value="">Select Language</option>
+                        <option value="Python" {% if language == 'Python' %}selected{% endif %}>Python</option>
+                        <option value="Java" {% if language == 'Java' %}selected{% endif %}>Java</option>
+                        <option value="C" {% if language == 'C' %}selected{% endif %}>C</option>
+                        <option value="C++" {% if language == 'C++' %}selected{% endif %}>C++</option>
+                        <option value="JavaScript" {% if language == 'JavaScript' %}selected{% endif %}>JavaScript</option>
+                    </select>
+
+                    <label for="difficulty">Difficulty Level</label>
+                    <select id="difficulty" name="difficulty" required>
+                        <option value="">Select Difficulty</option>
+                        <option value="Beginner" {% if difficulty == 'Beginner' %}selected{% endif %}>Beginner</option>
+                        <option value="Intermediate" {% if difficulty == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                        <option value="Advanced" {% if difficulty == 'Advanced' %}selected{% endif %}>Advanced</option>
+                    </select>
+
+                    <button type="submit">Generate Code</button>
+
+                </form>
+            </div>
+
+            {% if generated_code %}
+            <div class="result-box">
+                <h2>Generated Code and Explanation</h2>
+                <div class="generated-content">
+                    {{ generated_code }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result-box">
+                <h3>Error</h3>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+
+        </section>
+    </main>
+
+</body>
+</html>

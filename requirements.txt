@@ -1,0 +1,14 @@
+Flask
+python-dotenv
+requests
+pandas
+numpy
+plotly
+transformers
+torch
+nltk
+spacy
+scikit-learn
+google-genai
+Flask-SQLAlchemy
+psycopg2-binary
