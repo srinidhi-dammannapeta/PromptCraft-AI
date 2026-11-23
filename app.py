@@ -41,6 +41,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Initialize database with Flask
 db.init_app(app)
 
+with app.app_context():
+    db.create_all()
+
 # Function to save user activity history
 def save_history(feature_name, input_text, output_text):
 
@@ -570,8 +573,5 @@ def logout():
 
 
 if __name__ == "__main__":
-     # Create database tables
-    with app.app_context():
-        db.create_all()
     webbrowser.open("http://127.0.0.1:5000/logout")
     app.run(debug=True)
