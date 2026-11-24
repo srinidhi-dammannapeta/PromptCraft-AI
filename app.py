@@ -216,7 +216,7 @@ def generator():
 
             except Exception as e:
                 print("Gemini API Error:", e)
-                error = "Content generation failed. Please try again."
+                error = error = "Content generation failed. Please try again."
 
             else:
                 save_history(
